@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 public class AnswerService : MonoBehaviour
 {
-    [SerializeField] private string url = "https://pachitoapi.onrender.com/answer"; // <-- cambia por tu endpoint real
+    [SerializeField] private string url = "https://pachitoapi.onrender.com/answer";
     [SerializeField] TTSSpeaker voice;
 
     private bool hasAnswer = false; 
