@@ -69,7 +69,7 @@ public class AnswerService : MonoBehaviour
                 {
                     Debug.Log($"GET Success: {webRequest.downloadHandler.text}");
                     var data = JsonUtility.FromJson<AnswerResponse>(webRequest.downloadHandler.text);
-                    voice.Speak(data.answer); // Reproducir la respuesta con TTSSpeaker
+                    ; // Reproducir la respuesta con TTSSpeaker
                     hasAnswer = true; // cortamos el bucle
                 }
             }

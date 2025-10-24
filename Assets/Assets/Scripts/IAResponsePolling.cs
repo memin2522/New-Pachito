@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class IAResponsePolling : MonoBehaviour
@@ -6,15 +8,24 @@ public class IAResponsePolling : MonoBehaviour
 
     private bool hasAnswer = false;
     public float pollInterval = 5f;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private async Task PollForAnswerAsync()
     {
-        
+        while (!hasAnswer)
+        {
+            await ApiService.GetDataAsync(OnAnswerReceived, OnErrorReceived);
+            await Task.Delay(1000); 
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private void OnAnswerReceived(string answer)
     {
-        
+        hasAnswer = true;
+    }
+
+    private void OnErrorReceived(string error)
+    {
+
     }
 }
