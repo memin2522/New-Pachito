@@ -38,7 +38,6 @@ public class WebSocketService : MonoBehaviour
 
             json = json.TrimStart('[').TrimEnd(']');
 
-            // Deserializamos
             AnswerResponse data = JsonUtility.FromJson<AnswerResponse>(json);
             Debug.Log($"Answer recevied: {data.answer}");
             OnAnswerReceived(data.answer);

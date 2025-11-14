@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 public class PachitoController : MonoBehaviour
 {
@@ -9,11 +10,22 @@ public class PachitoController : MonoBehaviour
 
     [SerializeField] private TMP_InputField inputQuestion;
     [SerializeField] private TextMeshProUGUI textLabel;
+
+    private ConcurrentQueue<string> AnswerQueue = new ConcurrentQueue<string>();
     void Start()
     {
         _websocketService.OnAnswerReceived += OnAnswerReceived;
         _websocketService.OnPreparedToCommunicate += OnPreparedToSpeak;
         _ttsService.Speak("Hola soy pachito, puedes preguntarme cosas sobre la Sanbuena");
+    }
+
+    private void Update()
+    {
+        if(AnswerQueue.TryDequeue(out string answer))
+        {
+            textLabel.text += $"Received from server: {answer}\n";
+            _ttsService.Speak(answer);
+        }
     }
 
     private void OnPreparedToSpeak()
@@ -23,8 +35,7 @@ public class PachitoController : MonoBehaviour
 
     private void OnAnswerReceived(string answer)
     {
-        textLabel.text += $"Received from server: {answer}\n";
-        _ttsService.Speak(answer);
+        AnswerQueue.Enqueue(answer);
     }
 
     public void OnSendButtonClicked()
